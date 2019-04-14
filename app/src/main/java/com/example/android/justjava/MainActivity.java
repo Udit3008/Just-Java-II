@@ -9,13 +9,11 @@
 package com.example.android.justjava;
 
 
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
-
-import java.text.NumberFormat;
 
 /**
  * This app displays an order form to order coffee.
@@ -27,23 +25,60 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-    int number_of_coffees=0;
+
+    int number_of_coffees = 0;
 
     /**
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        displayPrice(number_of_coffees*15);
+        int total;
+        boolean whippedCream, nutella, chocolate;
+        String customer, salutation;
+        CheckBox whippedCreamCheckbox = (CheckBox) findViewById(R.id.whippedcream_checkbox);
+        CheckBox nutellaCheckbox = (CheckBox) findViewById(R.id.nutella_checkbox);
+        CheckBox chocolateCheckbox = (CheckBox) findViewById(R.id.chocolate_checkbox);
+        whippedCream = whippedCreamCheckbox.isChecked();
+        nutella = nutellaCheckbox.isChecked();
+        chocolate = chocolateCheckbox.isChecked();
+        customer = "Coffee Customer";
+        salutation = "Thank you!";
+        total = (number_of_coffees*15);
+        createOrderSummary(total,customer,salutation,whippedCream,nutella,chocolate);
     }
 
     public void increament(View view) {
-        number_of_coffees=number_of_coffees+1;
+        number_of_coffees = number_of_coffees + 1;
         display(number_of_coffees);
     }
 
     public void decreament(View view) {
-        number_of_coffees=number_of_coffees-1;
+        number_of_coffees = number_of_coffees - 1;
         display(number_of_coffees);
+    }
+
+    public void createOrderSummary(int price, String name, String greet, boolean whippedCream, boolean nutella, boolean chocolate){
+        String priceMessage = "";
+        priceMessage = priceMessage + "Name: " + name;
+        priceMessage = priceMessage +  "\nQuantity: " + number_of_coffees;
+        if (whippedCream == false && nutella == false && chocolate == false)
+            priceMessage = priceMessage + "\nWithout Toppings\n";
+        if ((whippedCream || nutella || chocolate) == true)
+            priceMessage = priceMessage + "\nWith added Toppings:\n";
+        if(whippedCream==true) {
+            priceMessage = priceMessage + "\tWhipped Cream\n";
+            price = price + 10;
+        }
+        if(nutella==true) {
+            priceMessage = priceMessage + "\tNutella\n";
+            price = price + 8;
+        }
+        if(chocolate==true) {
+            priceMessage = priceMessage + "\tChocolate\n";
+            price = price + 7;
+        }
+        priceMessage = priceMessage + "Total: ₹" + price + "\n" + greet;
+        displayMessage(priceMessage);
     }
 
     /**
@@ -55,11 +90,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * This method displays the given price on the screen.
+     * This method displays the given text on the screen.
      */
-    private void displayPrice(int number) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
-
+    private void displayMessage(String message) {
+        TextView orderSummaryTextView = (TextView) findViewById(R.id.orderSummary_text_view);
+        orderSummaryTextView.setText(message);
     }
 }
