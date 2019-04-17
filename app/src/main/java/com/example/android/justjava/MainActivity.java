@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void decreament(View view) {
         number_of_coffees = number_of_coffees - 1;
+        if (number_of_coffees < 0){
+            number_of_coffees=0;
+        }
         display(number_of_coffees);
     }
 
@@ -67,15 +70,15 @@ public class MainActivity extends AppCompatActivity {
             priceMessage = priceMessage + "\nWith added Toppings:\n";
         if(whippedCream==true) {
             priceMessage = priceMessage + "\tWhipped Cream\n";
-            price = price + 10;
+            price = price + (10*number_of_coffees);
         }
         if(nutella==true) {
             priceMessage = priceMessage + "\tNutella\n";
-            price = price + 8;
+            price = price + (8*number_of_coffees);
         }
         if(chocolate==true) {
             priceMessage = priceMessage + "\tChocolate\n";
-            price = price + 7;
+            price = price + (7*number_of_coffees);
         }
         priceMessage = priceMessage + "Total: ₹" + price + "\n" + greet;
         displayMessage(priceMessage);
